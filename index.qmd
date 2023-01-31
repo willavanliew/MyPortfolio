@@ -1,5 +1,5 @@
 ---
-title: "PracticePortfolio"
+title: "Practice Portfolio"
 ---
 
 This is where my projects will go 

@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "PracticePortfolio"
+  title: "Practice Portfolio"
   navbar:
     left:
       - href: index.qmd
