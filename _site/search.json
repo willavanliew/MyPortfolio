@@ -11,6 +11,6 @@
     "href": "about.html",
     "title": "About Me",
     "section": "",
-    "text": "This is where I will add information about myself"
+    "text": "This is where I will add information about myself\n\n#|echo: false\n2 * 2 \n\n[1] 4"
   }
 ]

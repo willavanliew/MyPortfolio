@@ -3,4 +3,3 @@ title: "About Me"
 ---
 
 This is where I will add information about myself
-
