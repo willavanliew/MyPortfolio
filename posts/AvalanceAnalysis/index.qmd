@@ -8,13 +8,16 @@ image: "AvalancheImage.jpeg"
 categories: [analysis, skiing, interests]
 ---
 
+Analysis of Avalanche Incidents and Fatalities in the United States from 1950 to 2022. 
 
-Some thing here to describe what the analysis is about 
+
+Data is available thanks to Colorado Avalanche Information Center (CAIC)
+
 
 ## Avalanche Incidents and Fatality Analysis 
 
 # Todo
-
+Note: colors come from the Colorado Avalanche Ice Hockey team flag 
 1.  Change colors
 2.  Themes
 3.  Add background information
@@ -34,29 +37,40 @@ Data from CAIC 2022
 #| warning: false
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(wesanderson)
 library(gganimate)
 accidents = read_csv("./data/Accidents_2022_PUBLIC (1).csv")
 accidents = rename(accidents, dSize = `D Size`)
 accidents = accidents %>%
   mutate(TravelMode = ifelse(TravelMode %in% c("SKi", "Ski"), "Ski", TravelMode))
+cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
+          "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
 
 #Have Avalanche Incidents and Fatalities increased over the years?
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+a_year = accidents %>%
+  group_by(YYYY) %>%
+  summarize(totalIncidents = n(), totalDeaths = sum(Killed))
+  
+a_year = gather(a_year, "type", "count", -YYYY)
 
+```
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-accidents %>%
-  group_by(YYYY) %>%
-  summarize(totalIncidents = n(), totalDeaths = sum(Killed)) %>%
+a_year %>%
   ggplot() + 
-  geom_line(aes(x = YYYY, y = totalIncidents), color = "red") +
-  geom_line(aes(x = YYYY, y = totalDeaths)) +
-  geom_text(aes(x = 2003, y = 17, label = "INCIDENTS", family = "Times New Roman"), color = "red") +
-  geom_text(aes(x = 1987, y = 25, label = "DEATHS", family = "Times New Roman")) +
-  labs(title = "HAVE AVALANCHE INCIDENTS AND DEATHS INCREASED OVER TIME?", 
-       x = "YEAR",
-       y = "TOTAL EVENTS")
+  geom_line(aes(x = YYYY, y = count, color = type), linewidth = 1) +
+  labs(title = "Have Avalanche Incidents and Deaths Increased Over Time?", 
+       x = "Year",
+       y = "Total Events") +
+  scale_color_manual(values = c("#E69F00", "#0072B2"), name = "Incident Type", labels = c("Death","Avalanche"))+
+  theme_minimal()
 ```
 
 # Does mode of transportation impact the number of accidents?
@@ -68,13 +82,21 @@ accidents %>%
   filter(TravelMode %in% c("Foot", "Ski", "Snowboard", "Snowshoe")) %>%
   group_by(TravelMode) %>%
   summarize(total_accidents = n(), total_deaths = sum(Killed)) %>%
-  ggplot(aes(x = TravelMode, y = total_accidents)) +
-  geom_col()
+  ggplot(aes(x = fct_reorder(TravelMode, desc(total_accidents)), y = total_accidents)) +
+  geom_col() +
+  labs(
+    title= "Which Mode of Transportation has the Highest Number of Incidents?",
+    x = "Travel Type",
+    y = "Number of Avalanches"
+  )+
+  theme_minimal()
 ```
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
 travel_type = accidents %>%
   filter(TravelMode %in% c("Foot", "Ski", "Snowboard", "Snowshoe")) %>%
   group_by(TravelMode) %>%
@@ -90,11 +112,12 @@ travel_type = gather(travel_type, "type", "count", -TravelMode)
 travel_type %>%
   ggplot() +
   geom_col(aes(x = fct_reorder(TravelMode, desc(count)), y = count, fill = type), position = "dodge") +
-  labs(title = "TBD", 
+  labs(title = "What is the distribution of accidents and deaths for the top modes of transportation?", 
        x = "Travel Mode", 
        y = "Number of Incidents") +
-  scale_fill_discrete(name = "Incident Type", labels = c("Avalanche", "Death"))
+  scale_fill_manual(values = c("darkgreen", "darkred"), name = "Incident Type", labels = c("Avalanche", "Death"))
 ```
+
 
 # Which States have highest consentration of Avalanche Accidents?
 
@@ -115,8 +138,10 @@ accidents %>%
 ```
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
 accidents_state = accidents %>%
   group_by(State) %>%
   summarize(total_accidents = n(), total_deaths = sum(Killed)) %>%
@@ -132,9 +157,12 @@ accidents_state = gather(accidents_state, "type", "count", -State)
 accidents_state %>%
   ggplot() +
   geom_col(aes(x = fct_reorder(State, desc(count)), y = count, fill = type), position = "dodge") +
-  labs(title = "TBD", 
+  labs(title = "Which State Has the highest number of avalanche incidents?", 
        x = "State", 
        y = "Number of Incidents") +
-  scale_fill_discrete(name = "Incident Type", labels = c("Avalanche", "Death"))
+  scale_fill_manual(values = c("darkgreen", "darkred"), name = "Incident Type", labels = c("Avalanche", "Death")) +
+  theme_minimal()
 
 ```
+
+

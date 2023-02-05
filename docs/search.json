@@ -1,10 +1,17 @@
 [
   {
+    "objectID": "posts/TidyTuesdayRavelry/index.html",
+    "href": "posts/TidyTuesdayRavelry/index.html",
+    "title": "TidyTuesdayYarn",
+    "section": "",
+    "text": "This is where I will be putting a short description of analysis\n##Background Describe the tidy tuesday prompt and what the user did - Code borrowed from https://github.com/awalsh17/ravelry_yarns/blob/main/code/explore_yarn.R Why am i interested in this?\nAdd a photo of my projects (in a slide show format)\n\nyarn_fibers_wide <- yarnFibers %>%\n  distinct(yarn_id, percentage, fiber_type_name) %>%\n  group_by(yarn_id) %>%\n  mutate(total = sum(percentage)) %>%\n  ungroup() %>%\n  filter(total == 100) %>%\n  distinct(yarn_id, fiber_type_name, .keep_all = TRUE) %>%\n  tidyr::pivot_wider(names_from = fiber_type_name, values_from = percentage, values_fill = 0)\n\n\nyarn_fibers_top <- yarnFibers %>%\n  group_by(yarn_id) %>%\n  slice_max(percentage, n = 1, with_ties = FALSE) %>%\n  ungroup() %>%\n  distinct(yarn_id, top_fiber = fiber_type_name)\n\n\nyarn_more <- yarn %>%\n  left_join(yarn_fibers_top, by = c(\"id\" = \"yarn_id\"))\n\n\nyarn2 <- yarn_more%>%\n  mutate(gauge = sapply(strsplit(yarn_weight_knit_gauge, \n                                 split = \"-\", fixed = TRUE), function(k) mean(as.numeric(k)))) %>%\n  mutate(weight_wpi = sapply(strsplit(yarn_weight_wpi, \n                                 split = \"-\", fixed = TRUE), function(k) mean(as.numeric(k)))) %>%\n  separate(texture_clean, into = \"texture1\", \n           sep = \",\", extra = \"drop\", remove = FALSE) %>%\n  mutate(texture_tidy = forcats::fct_lump_n(texture1, 10))\n\n\nunique(yarn2$machine_washable)\n\n[1]  TRUE    NA FALSE\n\n\n\nyarn3 = yarn2 %>%\n  mutate(machine_washable = ifelse(machine_washable %in% c(\"FALSE\", NA), 0, 1)) %>%\n  mutate(yarnCompanies = fct_lump(yarn_company_name, 4)) %>%\n  select(top_fiber, rating_average, yarnCompanies, yardage) %>%\n  drop_na(.)\n\n\nyarn_index<- createDataPartition(yarn3$rating_average, p = 0.8, list=FALSE)\nyarn_tr <- yarn3[yarn_index,]\nyarn_te <- yarn3[-yarn_index,]\n\ncontrol <- trainControl(method =\"repeatedcv\", number = 5, repeats=3)\nm1<- train(rating_average ~ .,\n           data = yarn_tr, \n           method = \"lm\", \n           trControl = control)\nprint(m1$resample)\n\n        RMSE  Rsquared       MAE   Resample\n1  0.5403050 0.2406205 0.3944003 Fold1.Rep1\n2  0.5454466 0.2252647 0.3973965 Fold2.Rep1\n3  0.5421368 0.2383017 0.3955029 Fold3.Rep1\n4  0.5473116 0.2370782 0.3954446 Fold4.Rep1\n5  0.5498139 0.2245442 0.3966567 Fold5.Rep1\n6  0.5479398 0.2428255 0.3970728 Fold1.Rep2\n7  0.5355430 0.2328926 0.3939291 Fold2.Rep2\n8  0.5535770 0.2261082 0.4002887 Fold3.Rep2\n9  0.5395660 0.2362892 0.3936014 Fold4.Rep2\n10 0.5487834 0.2261790 0.3949785 Fold5.Rep2\n11 0.5521316 0.2206489 0.3997772 Fold1.Rep3\n12 0.5422976 0.2345851 0.3944118 Fold2.Rep3\n13 0.5385661 0.2426533 0.3936477 Fold3.Rep3\n14 0.5469130 0.2365393 0.3966267 Fold4.Rep3\n15 0.5451585 0.2313825 0.3949319 Fold5.Rep3"
+  },
+  {
     "objectID": "posts/AvalanceAnalysis/index.html",
     "href": "posts/AvalanceAnalysis/index.html",
     "title": "Avalanche Analysis",
     "section": "",
-    "text": "Some thing here to describe what the analysis is about"
+    "text": "Analysis of Avalanche Incidents and Fatalities in the United States from 1950 to 2022.\nData is available thanks to Colorado Avalanche Information Center (CAIC)"
   },
   {
     "objectID": "posts/AvalanceAnalysis/index.html#avalanche-incidents-and-fatality-analysis",
@@ -16,9 +23,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Practice Portfolio",
+    "title": "Willa’s Portfolio",
     "section": "",
-    "text": "Avalanche Analysis\n\n\n\nanalysis\n\n\nskiing\n\n\ninterests\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "TidyTuesdayYarn\n\n\n\nanalysis\n\n\ntidytuesday\n\n\nyarn\n\n\nknitting\n\n\ninterests\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAvalanche Analysis\n\n\n\nanalysis\n\n\nskiing\n\n\ninterests\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",

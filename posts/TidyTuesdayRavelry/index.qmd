@@ -1,0 +1,187 @@
+---
+title: "TidyTuesdayYarn"
+format: html
+editor: visual
+categories: [analysis, tidytuesday,yarn, interests]
+---
+
+This is where I will be putting a short description of analysis 
+
+##Background 
+Describe the tidy tuesday prompt and what the user did 
+- Code borrowed from https://github.com/awalsh17/ravelry_yarns/blob/main/code/explore_yarn.R
+Why am i interested in this?
+
+Add a photo of my projects (in a slide show format)
+
+Code From : https://github.com/isaacarroyov/tidy_tuesday_R/blob/main/scripts_2022/2022_week-41_ravelry-yarn.R
+```{r}
+library(dplyr)
+library(ggplot2)
+library(MetBrewer)
+library(ggtext)
+library(sysfonts)
+library(showtext)
+```
+
+
+
+
+# ------ LOAD DATA ------
+```{r}
+yarn <- readr::read_csv('./data/yarn.csv')
+```
+
+
+
+# ------ DATAVIZ IDEA ------
+# Back to hacer algo raro:
+# No tengo ni la mas minima idea sobre el tema de yarn, sin embargo es una perfecta 
+# oportunidad para hacer una visualizacion poco convencional nada mas por el gusto
+# de crear algo.
+
+# ------ DATA WRANGLING ------
+df <- yarn %>%
+  select(yarn_company_name, rating_average, rating_count,yarn_weight_name) %>%
+  tidyr::drop_na()
+
+# ------ (creative) DATA VISUALIZATION ------
+df_dataviz <- df %>%
+  group_by(yarn_company_name, yarn_weight_name) %>%
+  summarise(avg_rating_average = mean(rating_average),
+            avg_rating_count = mean(rating_count)) %>%
+  ungroup()
+
+# Typography
+font_add_google("Vollkorn", "title_font")
+font_add_google("Raleway", "body_font")
+showtext_auto()
+
+title_font <- "title_font"
+body_font <- "body_font"
+
+# Text
+title_text <- "Dots and yarn data"
+subtitle_text <- "There are no mistakes, only happy accidents.<br>Bob Ross"
+caption_text <- "Almost the entire data visualization (the use of points and the colour palette) is inspired by the painting **Notre-Dame-de-la-Garde by Paul Signac** due to the _Pointillist style_.<br>Designed by Isaac Arroyo (@unisaacarroyov on twitter).<br>#TidyTuesday Week 41: Ravelry Yarn via **{ravelRy}**"
+
+# Chart
+p1 <- df_dataviz %>%
+  ggplot(aes(x = avg_rating_count, y = avg_rating_average, colour = yarn_weight_name)) +
+  geom_jitter(width = 0.2, height = 0.1) +
+  scale_x_log10(limits =c(1,1e5)) +
+  scale_colour_manual(values = met.brewer(name = "Signac", n = 15)) +
+  coord_polar() +
+  labs(title = title_text, subtitle = subtitle_text, caption = caption_text) +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    text = element_text(colour = "gray90"),
+    # Title
+    plot.title.position = "plot",
+    plot.title = element_textbox(family = title_font,
+                                 face = 'bold',
+                                 lineheight = 0.2,
+                                 size = rel(10),
+                                 width = unit(8,"in"),
+                                 margin = margin(0.125,0,0.125,0,"in"),
+                                 hjust = 0.5,
+                                 halign = 0.5),
+    # Subtitle
+    plot.subtitle = element_textbox(family = body_font,
+                                    face = 'italic',
+                                    lineheight = 0,
+                                    size = rel(4),
+                                    width = unit(8,"in"),
+                                    margin = margin(0,0,-0.5,0,"in"),
+                                    hjust = 0.5,
+                                    halign = 0.5),
+    # Caption
+    plot.caption.position = "plot",
+    plot.caption = element_textbox(family = body_font,
+                                   lineheight = 0.37,
+                                   size = rel(2),
+                                   width = unit(4,"in"),
+                                   margin = margin(-0.5,0,0.125,0,'in'),
+                                   hjust = 0.5,
+                                   halign = 0.5)
+  )
+ggsave(filename = "./gallery_2022/2022_week-41_ravelry-yarn.png",
+       plot = p1, bg = "#07152A",
+       width = 8.5, height = 8.5, units = "in")
+
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+library(tidyverse)
+library(caret)
+yarnFibers = read_csv("./data/yarn_fibers.csv")
+yarn = read_csv("./data/yarn.csv")
+```
+
+
+
+```{r}
+yarn_fibers_wide <- yarnFibers %>%
+  distinct(yarn_id, percentage, fiber_type_name) %>%
+  group_by(yarn_id) %>%
+  mutate(total = sum(percentage)) %>%
+  ungroup() %>%
+  filter(total == 100) %>%
+  distinct(yarn_id, fiber_type_name, .keep_all = TRUE) %>%
+  tidyr::pivot_wider(names_from = fiber_type_name, values_from = percentage, values_fill = 0)
+```
+
+```{r}
+yarn_fibers_top <- yarnFibers %>%
+  group_by(yarn_id) %>%
+  slice_max(percentage, n = 1, with_ties = FALSE) %>%
+  ungroup() %>%
+  distinct(yarn_id, top_fiber = fiber_type_name)
+```
+
+```{r}
+yarn_more <- yarn %>%
+  left_join(yarn_fibers_top, by = c("id" = "yarn_id"))
+```
+
+```{r}
+yarn2 <- yarn_more%>%
+  mutate(gauge = sapply(strsplit(yarn_weight_knit_gauge, 
+                                 split = "-", fixed = TRUE), function(k) mean(as.numeric(k)))) %>%
+  mutate(weight_wpi = sapply(strsplit(yarn_weight_wpi, 
+                                 split = "-", fixed = TRUE), function(k) mean(as.numeric(k)))) %>%
+  separate(texture_clean, into = "texture1", 
+           sep = ",", extra = "drop", remove = FALSE) %>%
+  mutate(texture_tidy = forcats::fct_lump_n(texture1, 10))
+```
+
+```{r}
+unique(yarn2$machine_washable)
+```
+
+
+```{r}
+yarn3 = yarn2 %>%
+  mutate(machine_washable = ifelse(machine_washable %in% c("FALSE", NA), 0, 1)) %>%
+  mutate(yarnCompanies = fct_lump(yarn_company_name, 4)) %>%
+  select(top_fiber, rating_average, yarnCompanies, yardage) %>%
+  drop_na(.)
+```
+
+```{r}
+yarn_index<- createDataPartition(yarn3$rating_average, p = 0.8, list=FALSE)
+yarn_tr <- yarn3[yarn_index,]
+yarn_te <- yarn3[-yarn_index,]
+
+control <- trainControl(method ="repeatedcv", number = 5, repeats=3)
+m1<- train(rating_average ~ .,
+           data = yarn_tr, 
+           method = "lm", 
+           trControl = control)
+print(m1$resample)
+```
+
