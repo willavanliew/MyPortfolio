@@ -1,5 +1,9 @@
 ---
 title: "Practice Portfolio"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: grid
+  categories: true
+  feed: true
 ---
-
-This is where my projects will go 
