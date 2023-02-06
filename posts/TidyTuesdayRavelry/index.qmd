@@ -43,7 +43,6 @@ The Data Available from Ravelry consists of many varables of interest. For my an
 df <- yarn %>%
   select(yarn_company_name, rating_average, yarn_weight_name) %>%
   tidyr::drop_na()
-head(df)
 ```
 
 I have been interested in learning more about different yarn companies so I chose to look at which brands had the highest number of perfect ratings in the data set.
@@ -58,7 +57,6 @@ high_ratings = df %>%
   summarize(totalnumber = n()) %>%
   arrange(desc(totalnumber)) %>%
   filter(totalnumber > 30) 
-head(high_ratings)
 ```
 
 In order to display the top brands I created a separate dataframe that held only the top three brands. 
@@ -72,7 +70,6 @@ top3 = df %>%
   arrange(desc(totalnumber)) %>%
   filter(totalnumber > 30) %>%
   head(3)
-top3
 ```
 
 My final graphical analysis shows that ColourMart, Ice Yarns, and Lana Grossa have the highest number of 5 point reviews for their yarns

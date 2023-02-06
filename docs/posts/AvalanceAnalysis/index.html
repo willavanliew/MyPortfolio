@@ -211,19 +211,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="the-data">The Data</h2>
 <p>The variables present in the data set include copious information about time, location, trigger type, travel mode of those stuck in the avalanche and fatalities.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(accidents)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(accidents)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 16
-  AvyYear  YYYY    MM    DD Location     Trigger dSize Setting State lat   lon  
-    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
-1    2022  2022     5    29 Mount Meeke… N         3   BC      CO    40.2… -105…
-2    2022  2022     4    25 Ice Face, s… AS        2   BC      AK    61.1… -145…
-3    2022  2022     3    19 North Fork … AS        2   BC      CO    40.5… -106…
-4    2022  2022     3    17 Pilot Knob,… AR        2.5 BC      CO    37.8… -107…
-5    2022  2022     3    17 Game Creek … AS        2.5 BC      WY    43.5… -111…
-6    2022  2022     3    12 South Fork … AM        2   BC      WY    41.0… -106…
-# … with 5 more variables: PrimaryActivity &lt;chr&gt;, TravelMode &lt;chr&gt;,
-#   Killed &lt;dbl&gt;, Description &lt;chr&gt;, Date &lt;chr&gt;</code></pre>
+<pre><code> [1] "AvyYear"         "YYYY"            "MM"              "DD"             
+ [5] "Location"        "Trigger"         "dSize"           "Setting"        
+ [9] "State"           "lat"             "lon"             "PrimaryActivity"
+[13] "TravelMode"      "Killed"          "Description"     "Date"           </code></pre>
 </div>
 </div>
 <p>I was most interested in the basic location, travel mode, fatalities and year.</p>
