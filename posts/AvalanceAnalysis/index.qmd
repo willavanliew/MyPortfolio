@@ -5,30 +5,24 @@ html:
   code-fold: true
   code-summary: "Show the code"
 image: "matea-nikolina-ythcnAYLgfQ-unsplash.jpg"
-categories: [analysis, skiing, interests]
+categories: [analysis, skiing]
 ---
 
-Analysis of Avalanche Incidents and Fatalities in the United States from 1950 to 2022. 
-
+Analysis of Avalanche Incidents and Fatalities in the United States from 1950 to 2022.
 
 Data is available thanks to Colorado Avalanche Information Center (CAIC)
 
 image credit: Matea Nikolina via Unsplash
-## Avalanche Incidents and Fatality Analysis 
 
-# Todo
-Note: colors come from the Colorado Avalanche Ice Hockey team flag 
-1.  Change colors
-2.  Themes
-3.  Add background information
-4.  State mountain information
+# Avalanche Incidents and Fatality Analysis
 
-# Background
+## Todo
 
-Data from CAIC 2022 
-1. Describe what is being shown 
-2. Describe variables being used 
-3. Describe interest in the analysis
+Note: colors come from the Colorado Avalanche Ice Hockey team flag 1. Change colors 2. Themes 3. Add background information 4. State mountain information
+
+## Background
+
+Data from CAIC 2022 1. Describe what is being shown 2. Describe variables being used 3. Describe interest in the analysis
 
 ```{r}
 #| echo: false
@@ -47,7 +41,8 @@ cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
           "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
 
-#Have Avalanche Incidents and Fatalities increased over the years?
+### Have Avalanche Incidents and Fatalities increased over the years?
+
 ```{r}
 #| echo: false
 #| include: false
@@ -60,6 +55,7 @@ a_year = accidents %>%
 a_year = gather(a_year, "type", "count", -YYYY)
 
 ```
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -73,7 +69,7 @@ a_year %>%
   theme_minimal()
 ```
 
-# Does mode of transportation impact the number of accidents?
+### Does mode of transportation impact the number of accidents?
 
 ```{r}
 #| code-fold: true
@@ -118,8 +114,7 @@ travel_type %>%
   scale_fill_manual(values = c("darkgreen", "darkred"), name = "Incident Type", labels = c("Avalanche", "Death"))
 ```
 
-
-# Which States have highest consentration of Avalanche Accidents?
+### Which States have highest consentration of Avalanche Accidents?
 
 ```{r}
 #| code-fold: true
@@ -164,5 +159,3 @@ accidents_state %>%
   theme_minimal()
 
 ```
-
-
