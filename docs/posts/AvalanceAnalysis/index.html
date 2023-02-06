@@ -165,8 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#avalanche-incidents-and-fatality-analysis" id="toc-avalanche-incidents-and-fatality-analysis" class="nav-link active" data-scroll-target="#avalanche-incidents-and-fatality-analysis">Avalanche Incidents and Fatality Analysis</a></li>
-  <li><a href="#todo" id="toc-todo" class="nav-link" data-scroll-target="#todo">Todo</a></li>
+  <li><a href="#todo" id="toc-todo" class="nav-link active" data-scroll-target="#todo">Todo</a></li>
   <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
   <li><a href="#does-mode-of-transportation-impact-the-number-of-accidents" id="toc-does-mode-of-transportation-impact-the-number-of-accidents" class="nav-link" data-scroll-target="#does-mode-of-transportation-impact-the-number-of-accidents">Does mode of transportation impact the number of accidents?</a></li>
   <li><a href="#which-states-have-highest-consentration-of-avalanche-accidents" id="toc-which-states-have-highest-consentration-of-avalanche-accidents" class="nav-link" data-scroll-target="#which-states-have-highest-consentration-of-avalanche-accidents">Which States have highest consentration of Avalanche Accidents?</a></li>
@@ -200,9 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <p>Analysis of Avalanche Incidents and Fatalities in the United States from 1950 to 2022.</p>
 <p>Data is available thanks to Colorado Avalanche Information Center (CAIC)</p>
-<section id="avalanche-incidents-and-fatality-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="avalanche-incidents-and-fatality-analysis">Avalanche Incidents and Fatality Analysis</h2>
-</section>
+<p>image credit: Matea Nikolina via Unsplash ## Avalanche Incidents and Fatality Analysis</p>
 <section id="todo" class="level1">
 <h1>Todo</h1>
 <p>Note: colors come from the Colorado Avalanche Ice Hockey team flag 1. Change colors 2. Themes 3. Add background information 4. State mountain information</p>
@@ -237,7 +234,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TravelMode <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Foot"</span>, <span class="st">"Ski"</span>, <span class="st">"Snowboard"</span>, <span class="st">"Snowshoe"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(TravelMode) <span class="sc">%&gt;%</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_accidents =</span> <span class="fu">n</span>(), <span class="at">total_deaths =</span> <span class="fu">sum</span>(Killed)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> TravelMode, <span class="at">y =</span> total_accidents)) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(TravelMode, <span class="fu">desc</span>(total_accidents)), <span class="at">y =</span> total_accidents)) <span class="sc">+</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span> <span class="st">"Which Mode of Transportation has the Highest Number of Incidents?"</span>,</span>
@@ -289,25 +286,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>accidents_state <span class="ot">=</span> accidents <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(State) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_accidents =</span> <span class="fu">n</span>(), <span class="at">total_deaths =</span> <span class="fu">sum</span>(Killed)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(total_accidents <span class="sc">&gt;</span> <span class="dv">1</span>) </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>accidents_state <span class="ot">=</span> <span class="fu">gather</span>(accidents_state, <span class="st">"type"</span>, <span class="st">"count"</span>, <span class="sc">-</span>State)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>accidents_state <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(State, <span class="fu">desc</span>(count)), <span class="at">y =</span> count, <span class="at">fill =</span> type), <span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Which State Has the highest number of avalanche incidents?"</span>, </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"State"</span>, </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Incidents"</span>) <span class="sc">+</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"darkgreen"</span>, <span class="st">"darkred"</span>), <span class="at">name =</span> <span class="st">"Incident Type"</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Avalanche"</span>, <span class="st">"Death"</span>)) <span class="sc">+</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>accidents_state <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(State, <span class="fu">desc</span>(count)), <span class="at">y =</span> count, <span class="at">fill =</span> type), <span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Which State Has the highest number of avalanche incidents?"</span>, </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"State"</span>, </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Incidents"</span>) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"darkgreen"</span>, <span class="st">"darkred"</span>), <span class="at">name =</span> <span class="st">"Incident Type"</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Avalanche"</span>, <span class="st">"Death"</span>)) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>

@@ -4,7 +4,7 @@ editor: visual
 html:
   code-fold: true
   code-summary: "Show the code"
-image: "AvalancheImage.jpeg"
+image: "matea-nikolina-ythcnAYLgfQ-unsplash.jpg"
 categories: [analysis, skiing, interests]
 ---
 
@@ -13,7 +13,7 @@ Analysis of Avalanche Incidents and Fatalities in the United States from 1950 to
 
 Data is available thanks to Colorado Avalanche Information Center (CAIC)
 
-
+image credit: Matea Nikolina via Unsplash
 ## Avalanche Incidents and Fatality Analysis 
 
 # Todo

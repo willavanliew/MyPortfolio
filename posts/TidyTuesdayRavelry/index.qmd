@@ -3,10 +3,11 @@ title: "TidyTuesdayYarn"
 format: html
 editor: visual
 categories: [analysis, tidytuesday,yarn, interests]
+image: "jean-marc-vieregge-cDKqFb-NOZc-unsplash.jpg"
 ---
 
 This is where I will be putting a short description of analysis 
-
+image from: Jean-Marc Vieregge via Unsplash
 ##Background 
 Describe the tidy tuesday prompt and what the user did 
 - Code borrowed from https://github.com/awalsh17/ravelry_yarns/blob/main/code/explore_yarn.R
@@ -17,23 +18,23 @@ Add a photo of my projects (in a slide show format)
 Code From : https://github.com/isaacarroyov/tidy_tuesday_R/blob/main/scripts_2022/2022_week-41_ravelry-yarn.R
 ```{r}
 library(dplyr)
+library(tidyverse)
 library(ggplot2)
 library(MetBrewer)
 library(ggtext)
 library(sysfonts)
 library(showtext)
+library(caret)
+library(skimr)
 ```
 
-
-
-
-# ------ LOAD DATA ------
 ```{r}
-yarn <- readr::read_csv('./data/yarn.csv')
+yarn <- read_csv('./data/yarn.csv')
+head(yarn)
 ```
-
-
-
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
 # ------ DATAVIZ IDEA ------
 # Back to hacer algo raro:
 # No tengo ni la mas minima idea sobre el tema de yarn, sin embargo es una perfecta 
@@ -46,6 +47,7 @@ df <- yarn %>%
   tidyr::drop_na()
 
 # ------ (creative) DATA VISUALIZATION ------
+
 df_dataviz <- df %>%
   group_by(yarn_company_name, yarn_weight_name) %>%
   summarise(avg_rating_average = mean(rating_average),
@@ -106,82 +108,44 @@ p1 <- df_dataviz %>%
                                    hjust = 0.5,
                                    halign = 0.5)
   )
-ggsave(filename = "./gallery_2022/2022_week-41_ravelry-yarn.png",
-       plot = p1, bg = "#07152A",
-       width = 8.5, height = 8.5, units = "in")
+p1
+#ggsave(filename = "./gallery_2022/2022_week-41_ravelry-yarn.png",
+#       plot = p1, bg = "#07152A",
+#       width = 8.5, height = 8.5, units = "in")
 
-
-```{r}
-#| echo: false
-#| include: false
-#| message: false
-#| warning: false
-library(tidyverse)
-library(caret)
-yarnFibers = read_csv("./data/yarn_fibers.csv")
-yarn = read_csv("./data/yarn.csv")
-```
-
-
-
-```{r}
-yarn_fibers_wide <- yarnFibers %>%
-  distinct(yarn_id, percentage, fiber_type_name) %>%
-  group_by(yarn_id) %>%
-  mutate(total = sum(percentage)) %>%
-  ungroup() %>%
-  filter(total == 100) %>%
-  distinct(yarn_id, fiber_type_name, .keep_all = TRUE) %>%
-  tidyr::pivot_wider(names_from = fiber_type_name, values_from = percentage, values_fill = 0)
 ```
 
 ```{r}
-yarn_fibers_top <- yarnFibers %>%
-  group_by(yarn_id) %>%
-  slice_max(percentage, n = 1, with_ties = FALSE) %>%
-  ungroup() %>%
-  distinct(yarn_id, top_fiber = fiber_type_name)
+df <- yarn %>%
+  select(yarn_company_name, rating_average, rating_count,yarn_weight_name) %>%
+  tidyr::drop_na()
+df
+```
+```{r}
+top3 = df %>%
+  filter(rating_average == 5.00) %>%
+  group_by(yarn_company_name) %>%
+  summarize(totalnumber = n()) %>%
+  arrange(desc(totalnumber)) %>%
+  filter(totalnumber > 30) %>%
+  head(3)
 ```
 
 ```{r}
-yarn_more <- yarn %>%
-  left_join(yarn_fibers_top, by = c("id" = "yarn_id"))
-```
-
-```{r}
-yarn2 <- yarn_more%>%
-  mutate(gauge = sapply(strsplit(yarn_weight_knit_gauge, 
-                                 split = "-", fixed = TRUE), function(k) mean(as.numeric(k)))) %>%
-  mutate(weight_wpi = sapply(strsplit(yarn_weight_wpi, 
-                                 split = "-", fixed = TRUE), function(k) mean(as.numeric(k)))) %>%
-  separate(texture_clean, into = "texture1", 
-           sep = ",", extra = "drop", remove = FALSE) %>%
-  mutate(texture_tidy = forcats::fct_lump_n(texture1, 10))
-```
-
-```{r}
-unique(yarn2$machine_washable)
-```
-
-
-```{r}
-yarn3 = yarn2 %>%
-  mutate(machine_washable = ifelse(machine_washable %in% c("FALSE", NA), 0, 1)) %>%
-  mutate(yarnCompanies = fct_lump(yarn_company_name, 4)) %>%
-  select(top_fiber, rating_average, yarnCompanies, yardage) %>%
-  drop_na(.)
-```
-
-```{r}
-yarn_index<- createDataPartition(yarn3$rating_average, p = 0.8, list=FALSE)
-yarn_tr <- yarn3[yarn_index,]
-yarn_te <- yarn3[-yarn_index,]
-
-control <- trainControl(method ="repeatedcv", number = 5, repeats=3)
-m1<- train(rating_average ~ .,
-           data = yarn_tr, 
-           method = "lm", 
-           trControl = control)
-print(m1$resample)
+df %>%
+  filter(rating_average == 5.00) %>%
+  group_by(yarn_company_name) %>%
+  summarize(totalnumber = n()) %>%
+  arrange(desc(totalnumber)) %>%
+  filter(totalnumber > 30) %>%
+  ggplot() +
+  geom_col(aes(y = fct_reorder(yarn_company_name, totalnumber), x = totalnumber), fill = "grey") +
+  geom_col(data = top3, aes(y = fct_reorder(yarn_company_name, totalnumber), x = totalnumber), fill = "darkred") +
+  labs(
+    title= "Which Yarn Company has the highest number of perfect ratings?",
+    x = "Total Number of 5 star ratings",
+    y = "Company Name"
+  ) +
+  theme_minimal()
 ```
 
