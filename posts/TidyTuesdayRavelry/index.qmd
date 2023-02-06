@@ -12,7 +12,7 @@ This is where I will be putting a short description of analysis
 
 
 image from: Jean-Marc Vieregge via Unsplash
-##Background 
+## Background 
 Describe the tidy tuesday prompt and what the user did 
 - Code borrowed from https://github.com/awalsh17/ravelry_yarns/blob/main/code/explore_yarn.R
 Why am i interested in this?
