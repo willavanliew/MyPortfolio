@@ -16,10 +16,6 @@ image credit: Matea Nikolina via Unsplash
 
 # Avalanche Incidents and Fatality Analysis
 
-## Todo
-
-Note: colors come from the Colorado Avalanche Ice Hockey team flag 1. Change colors 2. Themes 3. Add background information 4. State mountain information
-
 ## Background
 
 Data from CAIC 2022 1. Describe what is being shown 2. Describe variables being used 3. Describe interest in the analysis
