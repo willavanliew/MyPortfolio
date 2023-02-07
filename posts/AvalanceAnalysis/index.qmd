@@ -4,6 +4,9 @@ editor: visual
 html:
   code-fold: true
   code-summary: "Show the code"
+bibliography: "bibliography.bib"
+nocite: |
+     @*
 image: "matea-nikolina-ythcnAYLgfQ-unsplash.jpg"
 categories: [analysis, skiing]
 ---
@@ -161,4 +164,8 @@ accidents_state %>%
   scale_fill_manual(values = c("darkgreen", "darkred"), name = "Incident Type", labels = c("Avalanche", "Death")) +
   theme_minimal()
 
+```
+
+```{r}
+knitr::write_bib(names(sessionInfo()$otherPkgs), file="bibliography.bib")
 ```

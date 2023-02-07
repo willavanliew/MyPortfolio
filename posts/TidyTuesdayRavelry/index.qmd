@@ -2,6 +2,9 @@
 title: "TidyTuesdayYarn"
 format: html
 editor: visual
+bibliography: "bibliography.bib"
+nocite: |
+     @*
 categories: [analysis, tidytuesday, yarn]
 image: "jean-marc-vieregge-cDKqFb-NOZc-unsplash.jpg"
 ---
@@ -85,5 +88,8 @@ My final graphical analysis shows that ColourMart, Ice Yarns, and Lana Grossa ha
     y = "Company Name"
   ) +
   theme_minimal()
+```
+```{r}
+knitr::write_bib(names(sessionInfo()$otherPkgs), file="bibliography.bib")
 ```
 
