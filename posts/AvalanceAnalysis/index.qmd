@@ -25,7 +25,6 @@ But I was still curious about them, I wanted to know when they actually occur an
 #| include: false
 #| message: false
 #| warning: false
-knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(wesanderson)
 library(gganimate)

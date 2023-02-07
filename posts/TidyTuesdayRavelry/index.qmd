@@ -8,11 +8,11 @@ image: "jean-marc-vieregge-cDKqFb-NOZc-unsplash.jpg"
 
 Tidy Tuesday (2022) Week 44 Analysis: Ravelry Yarns
 
-
 image from: Jean-Marc Vieregge via Unsplash
 
 ## Background 
-Ravelry is one of the largest online fiber works sites available. I use the platform to find new and exciting patterns to knit for myself and my friends and family. In October of 2022 Tidy Tuesday shared yarn data available on Ravelry to the data science community for analysis. 
+Ravelry is one of the largest online fiber works sites available. <br>I use the platform to find new and exciting patterns to knit for myself and my friends and family. <br> In October of 2022 Tidy Tuesday shared yarn data available on Ravelry to the data science community for analysis. 
+
 The code I reviewed for my analysis comes from GitHub user <a href="https://github.com/awalsh17/ravelry_yarns/blob/main/code/explore_yarn.R" target="_blank">Alice Walsh</a> 
 
 ```{r}
