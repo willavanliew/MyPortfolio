@@ -70,13 +70,16 @@ a_year %>%
   scale_color_manual(values = c("#E69F00", "#0072B2"), name = "Incident Type", labels = c("Death","Avalanche"))+
   theme_minimal()
 ```
+```{r}
+unique(accidents$TravelMode)
+```
 
 ### Does mode of transportation impact the number of accidents?
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
 accidents %>%
-  filter(TravelMode %in% c("Foot", "Ski", "Snowboard", "Snowshoe")) %>%
+  filter(TravelMode %in% c("Foot", "Ski", "Snowboard", "Snowshoe", "Snowmobile")) %>%
   group_by(TravelMode) %>%
   summarize(total_accidents = n(), total_deaths = sum(Killed)) %>%
   ggplot(aes(x = fct_reorder(TravelMode, desc(total_accidents)), y = total_accidents)) +
@@ -95,7 +98,7 @@ accidents %>%
 #| message: false
 #| warning: false
 travel_type = accidents %>%
-  filter(TravelMode %in% c("Foot", "Ski", "Snowboard", "Snowshoe")) %>%
+  filter(TravelMode %in% c("Foot", "Ski", "Snowboard", "Snowshoe", "Snowmobile")) %>%
   group_by(TravelMode) %>%
   summarize(total_accidents = n(), total_deaths = sum(Killed))
 
