@@ -1,9 +1,6 @@
 ---
 title: "Avalanche Analysis"
 editor: visual
-html:
-  code-fold: true
-  code-summary: "Show the code"
 bibliography: "bibliography.bib"
 nocite: |
      @*
@@ -61,8 +58,6 @@ a_year = gather(a_year, "type", "count", -YYYY)
 ```
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
 a_year %>%
   ggplot() + 
   geom_line(aes(x = YYYY, y = count, color = type), linewidth = 1) +
@@ -72,14 +67,9 @@ a_year %>%
   scale_color_manual(values = c("#E69F00", "#0072B2"), name = "Incident Type", labels = c("Death","Avalanche"))+
   theme_minimal()
 ```
-```{r}
-unique(accidents$TravelMode)
-```
 
 ### Does mode of transportation impact the number of accidents?
 ```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
 accidents %>%
   filter(TravelMode %in% c("Foot", "Ski", "Snowboard", "Snowshoe", "Snowmobile")) %>%
   group_by(TravelMode) %>%
@@ -109,8 +99,6 @@ travel_type = gather(travel_type, "type", "count", -TravelMode)
 ```
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
 travel_type %>%
   ggplot() +
   geom_col(aes(x = fct_reorder(TravelMode, desc(count)), y = count, fill = type), position = "dodge") +
@@ -123,8 +111,6 @@ travel_type %>%
 ### Which States have highest consentration of Avalanche Accidents?
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
 accidents %>%
   group_by(State) %>%
   summarize(total_accidents = n()) %>%
@@ -153,8 +139,6 @@ accidents_state = gather(accidents_state, "type", "count", -State)
 ```
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
 accidents_state %>%
   ggplot() +
   geom_col(aes(x = fct_reorder(State, desc(count)), y = count, fill = type), position = "dodge") +
@@ -167,5 +151,9 @@ accidents_state %>%
 ```
 
 ```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
 knitr::write_bib(names(sessionInfo()$otherPkgs), file="bibliography.bib")
 ```

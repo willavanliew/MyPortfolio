@@ -16,6 +16,8 @@ format:
     css: styles.css
     toc: true
     embed-resources: true
+    code-fold: true
+    code-summary: "Show the code"
 
 
 
