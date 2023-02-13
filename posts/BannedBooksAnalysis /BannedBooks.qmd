@@ -1,9 +1,9 @@
 ---
-title: "BannedBooks"
+title: "Banned Books"
 format: html
 editor: visual
 image: "./data/bannedbooks.jpeg"
-categories: ['analysis']
+categories: [Analysis, R, Tables]
 ---
 
 An Analysis of the PEN America's Index of School Book Bans from July 1, 2021 to June 30, 2022

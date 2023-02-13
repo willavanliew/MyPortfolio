@@ -5,7 +5,7 @@ bibliography: "bibliography.bib"
 nocite: |
      @*
 image: "matea-nikolina-ythcnAYLgfQ-unsplash.jpg"
-categories: [analysis, skiing]
+categories: [Analysis, Skiing, R]
 ---
 
 Analysis of Avalanche Incidents and Fatalities in the United States from 1950 to 2022.

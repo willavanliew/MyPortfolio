@@ -16,14 +16,14 @@
   {
     "objectID": "posts/BannedBooksAnalysis /BannedBooks.html",
     "href": "posts/BannedBooksAnalysis /BannedBooks.html",
-    "title": "BannedBooks",
+    "title": "Banned Books",
     "section": "",
     "text": "An Analysis of the PEN America’s Index of School Book Bans from July 1, 2021 to June 30, 2022"
   },
   {
     "objectID": "posts/BannedBooksAnalysis /BannedBooks.html#the-data",
     "href": "posts/BannedBooksAnalysis /BannedBooks.html#the-data",
-    "title": "BannedBooks",
+    "title": "Banned Books",
     "section": "The Data",
     "text": "The Data\nData Comes from PEN America’s Index of School Book Bans\nImage From The State News\n\n\nShow the code\nbooks %>%\n  mutate(Author = as.factor(Author), Title = as.factor(Title), `Type of Ban` = as.factor(`Type of Ban`), State = as.factor(State), District = as.factor(District), `Date of Challenge/Removal` = as.factor(`Date of Challenge/Removal`), `Origin of Challenge` = as.factor(`Origin of Challenge`)) %>%\n  select(Author, Title, `Type of Ban`, State, District, `Date of Challenge/Removal`, `Origin of Challenge`) %>%\n  datatable(filter= \"top\", options = list(pageLength = 5, autoWidth = TRUE), rownames=FALSE)\n\n\n\n\n\n\n\n\n\nShow the code\ntopbooks %>%\n  select(image = image_url, Title, Author, numTimesBanned) %>%\n  gt()%>%\n  gt_img_rows(columns = image,img_source=\"local\", height = 50)%>%\n  tab_header(title = \"The Most Banned Books from July 2021 - June 2022\") %>%\n  cols_label(\n    Title = \"Book Title\",\n    image = \"Book Cover\",\n    Author = \"Author\",\n    numTimesBanned = \"Total Number of Bans\"\n  )\n\n\n\n\n\n\n  \n    \n      The Most Banned Books from July 2021 - June 2022\n    \n    \n  \n  \n    \n      Book Cover\n      Author\n      Total Number of Bans\n    \n  \n  \n    \n      Gender Queer: A Memoir\n    \n    \nKobabe, Maia\n41\n    \n      All Boys Aren't Blue\n    \n    \nJohnson, George M.\n29\n    \n      Out of Darkness\n    \n    \nPérez, Ashley Hope\n23\n    \n      The Bluest Eye\n    \n    \nMorrison, Toni\n22\n    \n      Lawn Boy\n    \n    \nEvison, Jonathan\n17\n    \n      The Hate U Give\n    \n    \nThomas, Angie\n17\n    \n      The Absolutely True Diary of a Part-Time Indian\n    \n    \nAlexie, Sherman\n16"
   },
@@ -53,7 +53,7 @@
     "href": "index.html",
     "title": "Willa’s Portfolio",
     "section": "",
-    "text": "TidyTuesdayYarn\n\n\n\nanalysis\n\n\ntidytuesday\n\n\nyarn\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBannedBooks\n\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAvalanche Analysis\n\n\n\nanalysis\n\n\nskiing\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "TidyTuesdayYarn\n\n\n\nAnalysis\n\n\nTidyTuesday\n\n\nYarn\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBanned Books\n\n\n\nAnalysis\n\n\nR\n\n\nTables\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAvalanche Analysis\n\n\n\nAnalysis\n\n\nSkiing\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
