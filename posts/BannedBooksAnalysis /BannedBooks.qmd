@@ -1,0 +1,94 @@
+---
+title: "BannedBooks"
+format: html
+editor: visual
+image: "./data/bannedbooks.jpeg"
+categories: ['analysis']
+---
+
+An Analysis of the PEN America's Index of School Book Bans from July 1, 2021 to June 30, 2022
+
+## The Data 
+Data Comes from <a href="https://pen.org/banned-in-the-usa/#what" target="_blank">PEN America's Index of School Book Bans</a><br>
+
+Image From <a href="https://statenews.com/article/2022/02/the-fight-against-book-banning-at-msu?ct=content_open&cv=cbox_latest" target="_blank">The State News</a>
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(MetBrewer)
+library(ggtext)
+library(sysfonts)
+library(showtext)
+library(caret)
+library(skimr)
+library(flextable)
+library(gt)
+library(ggimage)
+library(gtExtras)
+library(DT)
+books <- read_csv('./data/bannedbooks.csv')
+
+```
+
+```{r}
+books %>%
+  mutate(Author = as.factor(Author), Title = as.factor(Title), `Type of Ban` = as.factor(`Type of Ban`), State = as.factor(State), District = as.factor(District), `Date of Challenge/Removal` = as.factor(`Date of Challenge/Removal`), `Origin of Challenge` = as.factor(`Origin of Challenge`)) %>%
+  select(Author, Title, `Type of Ban`, State, District, `Date of Challenge/Removal`, `Origin of Challenge`) %>%
+  datatable(filter= "top", options = list(pageLength = 5, autoWidth = TRUE), rownames=FALSE)
+```
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+topbooks = books %>%
+  select(Title, Author) %>%
+  group_by(Title,Author) %>%
+  summarize(numTimesBanned=n()) %>%
+  arrange(desc(numTimesBanned))%>%
+  filter(numTimesBanned > 15)
+topbooks
+```
+
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+topbooks = topbooks %>%
+  mutate(image_url = case_when(
+    Title == "Gender Queer: A Memoir" ~ "./data/images/genderQueer.png",
+    Title == "All Boys Aren't Blue" ~ "./data/images/allboysarentblue.png",
+    Title == "Out of Darkness" ~ "./data/images/OutofDarknesscover.png",
+    Title == "The Bluest Eye" ~ "./data/images/thebluesteye.png",
+    Title == "Lawn Boy" ~ "./data/images/thelawnboy.png",
+    Title == "The Hate U Give" ~ "./data/images/thehateyougive.png",
+    Title == "The Absolutely True Diary of a Part-Time Indian" ~ "./data/images/theabsolutelytruediary.png"
+  ))
+```
+
+```{r}
+topbooks %>%
+  select(image = image_url, Title, Author, numTimesBanned) %>%
+  gt()%>%
+  gt_img_rows(columns = image,img_source="local", height = 50)%>%
+  tab_header(title = "The Most Banned Books from July 2021 - June 2022") %>%
+  cols_label(
+    Title = "Book Title",
+    image = "Book Cover",
+    Author = "Author",
+    numTimesBanned = "Total Number of Bans"
+  )
+```
+
+
+
+
