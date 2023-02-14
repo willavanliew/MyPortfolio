@@ -1,6 +1,8 @@
 ---
 title: "Banned Books"
-format: html
+format: 
+  html:
+    page-layout: full
 editor: visual
 image: "./data/bannedbooks.jpeg"
 categories: [Analysis, R, Tables]
@@ -8,7 +10,8 @@ categories: [Analysis, R, Tables]
 
 An Analysis of the PEN America's Index of School Book Bans from July 1, 2021 to June 30, 2022
 
-### The Data 
+### The Data
+
 Data Comes from <a href="https://pen.org/banned-in-the-usa/#what" target="_blank">PEN America's Index of School Book Bans</a><br>
 
 Image From <a href="https://statenews.com/article/2022/02/the-fight-against-book-banning-at-msu?ct=content_open&cv=cbox_latest" target="_blank">The State News</a>
@@ -35,12 +38,16 @@ books <- read_csv('./data/bannedbooks.csv')
 
 ```
 
+## Starting Table
+
 ```{r}
 books %>%
   mutate(Author = as.factor(Author), Title = as.factor(Title), `Type of Ban` = as.factor(`Type of Ban`), State = as.factor(State), District = as.factor(District), `Date of Challenge/Removal` = as.factor(`Date of Challenge/Removal`), `Origin of Challenge` = as.factor(`Origin of Challenge`)) %>%
-  select(Author, Title, `Type of Ban`, State, District, `Date of Challenge/Removal`, `Origin of Challenge`) %>%
+  select(Author, Title, `Type of Ban`, State, `Date of Challenge/Removal`, `Origin of Challenge`) %>%
   datatable(filter= "top", options = list(pageLength = 5, autoWidth = TRUE), rownames=FALSE)
 ```
+
+## Top 7 Most Banned Books
 
 ```{r}
 #| echo: false
@@ -55,7 +62,6 @@ topbooks = books %>%
   filter(numTimesBanned > 15)
 topbooks
 ```
-
 
 ```{r}
 #| echo: false
@@ -87,7 +93,3 @@ topbooks %>%
     numTimesBanned = "Total Number of Bans"
   )
 ```
-
-
-
-
