@@ -83,6 +83,7 @@ topbooks = topbooks %>%
 ```{r}
 topbooks %>%
   select(image = image_url, Title, Author, numTimesBanned) %>%
+  ungroup() %>%
   gt()%>%
   gt_img_rows(columns = image,img_source="local", height = 150)%>%
   tab_header(title = "The Most Banned Books from July 2021 - June 2022") %>%
@@ -93,3 +94,4 @@ topbooks %>%
     numTimesBanned = "Total Number of Bans"
   )
 ```
+
