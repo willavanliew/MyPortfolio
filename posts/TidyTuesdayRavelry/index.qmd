@@ -24,15 +24,7 @@ The code I reviewed for my analysis comes from GitHub user <a href="https://gith
 #| include: false
 #| message: false
 #| warning: false
-library(dplyr)
 library(tidyverse)
-library(ggplot2)
-library(MetBrewer)
-library(ggtext)
-library(sysfonts)
-library(showtext)
-library(caret)
-library(skimr)
 yarn <- read_csv('./data/yarn.csv')
 ```
 

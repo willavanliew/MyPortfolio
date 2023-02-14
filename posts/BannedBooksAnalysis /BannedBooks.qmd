@@ -21,17 +21,8 @@ Image From <a href="https://statenews.com/article/2022/02/the-fight-against-book
 #| include: false
 #| message: false
 #| warning: false
-library(dplyr)
 library(tidyverse)
-library(ggplot2)
-library(MetBrewer)
-library(ggtext)
-library(sysfonts)
-library(showtext)
-library(skimr)
-library(flextable)
 library(gt)
-library(ggimage)
 library(gtExtras)
 library(DT)
 books <- read_csv('./data/bannedbooks.csv')

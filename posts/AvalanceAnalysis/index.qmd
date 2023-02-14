@@ -26,10 +26,7 @@ But I was still curious about them, I wanted to know when they actually occur an
 #| message: false
 #| warning: false
 library(tidyverse)
-library(wesanderson)
-library(gganimate)
-library(flextable)
-library(gt)
+
 accidents = read_csv("./data/Accidents_2022_PUBLIC (1).csv")
 accidents = rename(accidents, dSize = `D Size`)
 accidents = accidents %>%
