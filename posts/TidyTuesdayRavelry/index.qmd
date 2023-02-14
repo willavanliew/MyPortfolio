@@ -13,10 +13,11 @@ Tidy Tuesday (2022) Week 44 Analysis: Ravelry Yarns
 
 image from: Jean-Marc Vieregge via Unsplash
 
-## Background 
-Ravelry is one of the largest online fiber works sites available. <br>I use the platform to find new and exciting patterns to knit for myself and my friends and family. <br> In October of 2022 Tidy Tuesday shared yarn data available on Ravelry to the data science community for analysis. 
+## Background
 
-The code I reviewed for my analysis comes from GitHub user <a href="https://github.com/awalsh17/ravelry_yarns/blob/main/code/explore_yarn.R" target="_blank">Alice Walsh</a> 
+Ravelry is one of the largest online fiber works sites available. <br>I use the platform to find new and exciting patterns to knit for myself and my friends and family. <br> In October of 2022 Tidy Tuesday shared yarn data available on Ravelry to the data science community for analysis.
+
+The code I reviewed for my analysis comes from GitHub user <a href="https://github.com/awalsh17/ravelry_yarns/blob/main/code/explore_yarn.R" target="_blank">Alice Walsh</a>
 
 ```{r}
 #| echo: false
@@ -34,11 +35,10 @@ library(caret)
 library(skimr)
 yarn <- read_csv('./data/yarn.csv')
 ```
-### Original Data Set 
-```{r}
-head(yarn)
-```
-The Data Available from Ravelry consists of many varables of interest. For my analysis I chose to primarily look at the average rating, yarn weight name and the company that sells the specific yarns. 
+
+### Original Data Set
+
+The Data Available from Ravelry consists of many varables of interest. For my analysis I chose to primarily look at the average rating, yarn weight name and the company that sells the specific yarns.
 
 ```{r}
 df <- yarn %>%
@@ -48,7 +48,8 @@ df <- yarn %>%
 
 I have been interested in learning more about different yarn companies so I chose to look at which brands had the highest number of perfect ratings in the data set.
 
-I began by filtering only the yarns with a perfect rating and summarized the number of yarns each company had. Some brands only had a few yarns that fit that requirement so I narrowed my scope to only those with more than thirty perfectly rated yarns. 
+I began by filtering only the yarns with a perfect rating and summarized the number of yarns each company had. Some brands only had a few yarns that fit that requirement so I narrowed my scope to only those with more than thirty perfectly rated yarns.
+
 ```{r}
 high_ratings = df %>%
   filter(rating_average == 5.00) %>%
@@ -58,7 +59,8 @@ high_ratings = df %>%
   filter(totalnumber > 30) 
 ```
 
-In order to display the top brands I created a separate dataframe that held only the top three brands. 
+In order to display the top brands I created a separate dataframe that held only the top three brands.
+
 ```{r}
 top3 = df %>%
   filter(rating_average == 5.00) %>%
@@ -70,6 +72,7 @@ top3 = df %>%
 ```
 
 My final graphical analysis shows that ColourMart, Ice Yarns, and Lana Grossa have the highest number of 5 point reviews for their yarns
+
 ```{r}
 ggplot() +
   geom_col(data = high_ratings,aes(y = fct_reorder(yarn_company_name, totalnumber), x = totalnumber), fill = "grey") +
@@ -81,6 +84,7 @@ ggplot() +
   ) +
   theme_minimal()
 ```
+
 ```{r}
 #| echo: false
 #| include: false
@@ -88,4 +92,3 @@ ggplot() +
 #| warning: false
 knitr::write_bib(names(sessionInfo()$otherPkgs), file="bibliography.bib")
 ```
-

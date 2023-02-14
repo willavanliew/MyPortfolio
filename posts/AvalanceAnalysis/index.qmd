@@ -10,15 +10,15 @@ categories: [Analysis, Skiing, R]
 
 Analysis of Avalanche Incidents and Fatalities in the United States from 1950 to 2022.
 
-Data is available thanks to Colorado Avalanche Information Center <a href="https://avalanche.state.co.us/accidents/statistics-and-reporting" target="_blank">(CAIC)</a> 
+Data is available thanks to Colorado Avalanche Information Center <a href="https://avalanche.state.co.us/accidents/statistics-and-reporting" target="_blank">(CAIC)</a>
 
 image credit: Matea Nikolina via Unsplash
 
 ## Background
-I have been skiing for a very long time. As a child my father would put on ski movies after a long day on the slopes, most of the movies we would watch would have at least one scene of a professional skier or snowboarder riding down a slope as an avalanche is triggered. 
-Much like quicksand I thought avalanches would be a very big worry as a grew older, but when one skis at a sanctioned ski resort avalanche dangers are slim to none if you are careful. 
 
-But I was still curious about them, I wanted to know when they actually occur and how they are triggered. I came across an expansive data set from the Colorado Avalanche Information Center and attempted to answer some of the questions I had. 
+I have been skiing for a very long time. As a child my father would put on ski movies after a long day on the slopes, most of the movies we would watch would have at least one scene of a professional skier or snowboarder riding down a slope as an avalanche is triggered. Much like quicksand I thought avalanches would be a very big worry as a grew older, but when one skis at a sanctioned ski resort avalanche dangers are slim to none if you are careful.
+
+But I was still curious about them, I wanted to know when they actually occur and how they are triggered. I came across an expansive data set from the Colorado Avalanche Information Center and attempted to answer some of the questions I had.
 
 ```{r}
 #| echo: false
@@ -51,9 +51,16 @@ cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
           "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
           
 ```
-## The Data 
+
+## The Data
+
 The variables present in the data set include copious information about time, location, trigger type, travel mode of those stuck in the avalanche and fatalities.
+
 ```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
 flextable(accidents %>% 
   select(Date, Location, Trigger, dSize, State, PrimaryActivity, TravelMode, Killed)%>%
     filter(TravelMode == "Ski"))
@@ -69,14 +76,8 @@ accidents %>%
   group_by(fct_Year, TravelMode) %>%
   summarize(total_accidents = n(), total_deaths = sum(Killed))
 ```
-```{r}
-sort(unique(accidents$TravelMode))
-```
 
-```{r}
-names(accidents)
-```
-I was most interested in the basic location, travel mode, fatalities and year. 
+I was most interested in the basic location, travel mode, fatalities and year.
 
 ### Have Avalanche Incidents and Fatalities increased over the years?
 
@@ -99,12 +100,14 @@ a_year %>%
   geom_line(aes(x = YYYY, y = count, color = type), linewidth = 1) +
   labs(title = "Have Avalanche Incidents and Deaths Increased Over Time?", 
        x = "Year",
-       y = "Total Events") +
+       y = "Total Events",
+       caption = "Data: Colorado Avalanche Information Center") +
   scale_color_manual(values = c("#E69F00", "#0072B2"), name = "Incident Type", labels = c("Death","Avalanche"))+
   theme_minimal()
 ```
 
 ### Does mode of transportation impact the number of accidents?
+
 ```{r}
 accidents %>%
   filter(TravelMode %in% c("Foot", "Ski", "Snowboard", "Snowshoe", "Snowmobile")) %>%

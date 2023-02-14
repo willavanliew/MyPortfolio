@@ -81,6 +81,7 @@ topbooks = topbooks %>%
 ```
 
 ```{r}
+#Add links to purchase the books -> to authors homepage? 
 topbooks %>%
   select(image = image_url, Title, Author, numTimesBanned) %>%
   ungroup() %>%
