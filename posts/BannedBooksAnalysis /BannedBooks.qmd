@@ -4,6 +4,9 @@ format:
   html:
     page-layout: full
 editor: visual
+bibliography: "bibliography.bib"
+nocite: |
+     @*
 image: "./data/bannedbooks.jpeg"
 categories: [Analysis, R, Tables]
 ---
@@ -87,3 +90,10 @@ topbooks %>%
   )
 ```
 
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+knitr::write_bib(names(sessionInfo()$otherPkgs), file="bibliography.bib")
+```
