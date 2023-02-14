@@ -56,27 +56,6 @@ cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
 
 The variables present in the data set include copious information about time, location, trigger type, travel mode of those stuck in the avalanche and fatalities.
 
-```{r}
-#| echo: false
-#| include: false
-#| message: false
-#| warning: false
-flextable(accidents %>% 
-  select(Date, Location, Trigger, dSize, State, PrimaryActivity, TravelMode, Killed)%>%
-    filter(TravelMode == "Ski"))
-
-accidents %>%
-  filter(TravelMode == "Ski") %>%
-  group_by(PrimaryActivity) %>%
-  summarize(total_accidents = n(), total_killed = sum(Killed))
-
-accidents
-
-accidents %>%
-  group_by(fct_Year, TravelMode) %>%
-  summarize(total_accidents = n(), total_deaths = sum(Killed))
-```
-
 I was most interested in the basic location, travel mode, fatalities and year.
 
 ### Have Avalanche Incidents and Fatalities increased over the years?
