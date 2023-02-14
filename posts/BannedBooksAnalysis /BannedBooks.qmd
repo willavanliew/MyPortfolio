@@ -8,7 +8,7 @@ categories: [Analysis, R, Tables]
 
 An Analysis of the PEN America's Index of School Book Bans from July 1, 2021 to June 30, 2022
 
-## The Data 
+### The Data 
 Data Comes from <a href="https://pen.org/banned-in-the-usa/#what" target="_blank">PEN America's Index of School Book Bans</a><br>
 
 Image From <a href="https://statenews.com/article/2022/02/the-fight-against-book-banning-at-msu?ct=content_open&cv=cbox_latest" target="_blank">The State News</a>
@@ -25,7 +25,6 @@ library(MetBrewer)
 library(ggtext)
 library(sysfonts)
 library(showtext)
-library(caret)
 library(skimr)
 library(flextable)
 library(gt)
@@ -79,7 +78,7 @@ topbooks = topbooks %>%
 topbooks %>%
   select(image = image_url, Title, Author, numTimesBanned) %>%
   gt()%>%
-  gt_img_rows(columns = image,img_source="local", height = 50)%>%
+  gt_img_rows(columns = image,img_source="local", height = 150)%>%
   tab_header(title = "The Most Banned Books from July 2021 - June 2022") %>%
   cols_label(
     Title = "Book Title",
