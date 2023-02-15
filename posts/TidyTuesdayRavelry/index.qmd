@@ -30,7 +30,7 @@ yarn <- read_csv('./data/yarn.csv')
 
 ### Original Data Set
 
-The Data Available from Ravelry consists of many varables of interest. For my analysis I chose to primarily look at the average rating, yarn weight name and the company that sells the specific yarns.
+The Data Available from Ravelry consists of many variables of interest. For my analysis I chose to primarily look at the average rating, yarn weight name and the company that sells the specific yarns.
 
 ```{r}
 df <- yarn %>%
