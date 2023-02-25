@@ -8,7 +8,7 @@ image: "matea-nikolina-ythcnAYLgfQ-unsplash.jpg"
 categories: [Analysis, Skiing, R]
 ---
 
-Analysis of Avalanche Incidents and Fatalities in the United States from 1950 to 2022.
+Analysis of Avalanche Accidents and Fatalities in the United States from 1950 to 2022.
 
 Data is available thanks to Colorado Avalanche Information Center <a href="https://avalanche.state.co.us/accidents/statistics-and-reporting" target="_blank">(CAIC)</a>
 
@@ -53,7 +53,7 @@ The variables present in the data set include copious information about time, lo
 
 I was most interested in the basic location, travel mode, fatalities and year.
 
-### Have Avalanche Incidents and Fatalities increased over the years?
+### Have Avalanche Accidents and Fatalities increased over the years?
 
 ```{r}
 #| echo: false
@@ -72,11 +72,11 @@ a_year = gather(a_year, "type", "count", -YYYY)
 a_year %>%
   ggplot() + 
   geom_line(aes(x = YYYY, y = count, color = type), linewidth = 1) +
-  labs(title = "Have Avalanche Incidents and Deaths Increased Over Time?", 
+  labs(title = "Have Avalanche Accidents and Deaths Increased Over Time?", 
        x = "Year",
        y = "Total Events",
        caption = "Data: Colorado Avalanche Information Center") +
-  scale_color_manual(values = c("#E69F00", "#0072B2"), name = "Incident Type", labels = c("Death","Avalanche"))+
+  scale_color_manual(values = c("#E69F00", "#0072B2"),name = "Type",  labels = c("Death","Avalanche"))+
   theme_minimal()
 
 ```
@@ -123,10 +123,10 @@ accidents_state = gather(accidents_state, "type", "count", -State)
 accidents_state %>%
   ggplot() +
   geom_col(aes(x = fct_reorder(State, desc(count)), y = count, fill = type), position = "dodge") +
-  labs(title = "Which State Has the highest number of avalanche incidents?", 
+  labs(title = "Which State Has the Highest Number of Avalanche Accidents?", 
        x = "State", 
-       y = "Number of Incidents") +
-  scale_fill_manual(values = c("darkgreen", "darkred"), name = "Incident Type", labels = c("Avalanche", "Death")) +
+       y = "Number of Accidents") +
+  scale_fill_manual(values = c("darkgreen", "darkred"), name = "Type", labels = c("Avalanche", "Death")) +
   theme_minimal()
 
 ```
@@ -161,7 +161,7 @@ mappedCounts <- states2 %>%
   geom_polygon_interactive(color = "grey45", 
                            fill = "grey", 
                            aes(tooltip = ifelse(count > 0, ifelse(count > 1, multiple, single), paste0(full,"<br>No Avalanche Accidents", sep="")))) + 
-  labs(title="Avalanche Incidents",subtitle = "From April 1951 to May 2022")+
+  labs(title="Avalanche Accidents",subtitle = "From April 1951 to May 2022")+
   theme_minimal()+
   theme(axis.title.x = element_blank(),
         axis.title.y = element_blank(),
@@ -241,7 +241,7 @@ accidents %>%
   ggplot(aes(x = fct_reorder(TravelMode, desc(total_accidents)), y = total_accidents)) +
   geom_col() +
   labs(
-    title= "Which Mode of Transportation has the Highest Number of Incidents?",
+    title= "Which Mode of Transportation has the Highest Number of Accidents?",
     x = "Travel Type",
     y = "Number of Avalanches"
   )+
@@ -266,10 +266,11 @@ travel_type = gather(travel_type, "type", "count", -TravelMode)
 travel_type %>%
   ggplot() +
   geom_col(aes(x = fct_reorder(TravelMode, desc(count)), y = count, fill = type), position = "dodge") +
-  labs(title = "What is the distribution of accidents and deaths for the top modes of transportation?", 
+  labs(title = "What is the Distribution of Accidents and Deaths for the Top Modes of Transportation?", 
        x = "Travel Mode", 
-       y = "Number of Incidents") +
-  scale_fill_manual(values = c("darkgreen", "darkred"), name = "Incident Type", labels = c("Avalanche", "Death"))
+       y = "Number of Accidents") +
+  scale_fill_manual(values = c("darkgreen", "darkred"), name = "Type", labels = c("Avalanche", "Death"))+
+  theme_minimal()
 ```
 
 ```{r}
