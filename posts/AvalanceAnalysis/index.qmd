@@ -53,7 +53,7 @@ The variables present in the data set include copious information about time, lo
 
 I was most interested in the basic location, travel mode, fatalities and year.
 
-### Have Avalanche Accidents and Fatalities increased over the years?
+### Have avalanche accidents and fatalities increased over the years?
 
 ```{r}
 #| echo: false
@@ -81,7 +81,7 @@ a_year %>%
 
 ```
 
-### Which States have highest concentration of Avalanche Accidents?
+### Which states have highest concentration of avalanche accidents?
 
 ```{r}
 #| echo: false
@@ -200,7 +200,7 @@ recentAccidents = recentAccidents%>%
   mutate(PrimaryActivity = ifelse(Killed > 1, paste0(PrimaryActivity,"s"), PrimaryActivity))
 ```
 
-### Where did these Events Occur in Recent Years?
+### Where did these events occur in recent years?
 
 ```{r}
 g <- list(
@@ -224,7 +224,7 @@ fig <- fig %>% add_markers(
   )
 fig <- fig %>% layout(legend=list(title=list(text='<b> # of Deaths </b>')))
 fig <- fig %>% layout(
-    title = 'Avalanche Deaths In United States<br/>(From January 2000 to May 2022)',
+    title = 'Avalanche Deaths In United States <br /> (From January 2000 to May 2022)',
     geo = g
   )
 
@@ -266,7 +266,7 @@ travel_type = gather(travel_type, "type", "count", -TravelMode)
 travel_type %>%
   ggplot() +
   geom_col(aes(x = fct_reorder(TravelMode, desc(count)), y = count, fill = type), position = "dodge") +
-  labs(title = "What is the Distribution of Accidents and Deaths for the Top Modes of Transportation?", 
+  labs(title = "Distribution of Accidents and Deaths for the Top Modes of Transportation?", 
        x = "Travel Mode", 
        y = "Number of Accidents") +
   scale_fill_manual(values = c("darkgreen", "darkred"), name = "Type", labels = c("Avalanche", "Death"))+
