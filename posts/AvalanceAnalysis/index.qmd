@@ -26,21 +26,19 @@ But I was still curious about them, I wanted to know when they actually occur an
 #| message: false
 #| warning: false
 library(tidyverse)
+library(usmap)
+library(ggiraph)
+library(patchwork)
+library(magick)
+library(plotly)
 
-accidents = read_csv("./data/Accidents_2022_PUBLIC (1).csv")
-accidents = rename(accidents, dSize = `D Size`)
+states <- usmap::us_map()
+accidents <- read_csv("./data/Accidents_2022_PUBLIC (1).csv")
+accidents <- rename(accidents, dSize = `D Size`)
 accidents = accidents %>%
   mutate(TravelMode = ifelse(TravelMode %in% c("SKi", "Ski"), "Ski", TravelMode)) %>%
   mutate(PrimaryActivity = ifelse(PrimaryActivity %in% c("Mechanised Guide", "Mechanized Guide"), "Mechanised Guide", PrimaryActivity)) %>%
-  mutate(fct_Year = case_when(
-    YYYY > 1950 & YYYY < 1960 ~ "1950s",
-    YYYY >= 1960 & YYYY < 1970 ~ "1960s",
-    YYYY >= 1970 & YYYY < 1980 ~ "1970s",
-    YYYY >= 1980 & YYYY < 1990 ~"1980s",
-    YYYY >= 1990 & YYYY < 2000 ~"1990s",
-    YYYY >= 2000 & YYYY < 2010 ~ "2000s",
-    YYYY >= 2010 ~ "2010s" #Note: Includes 2020s as well, later on will have it be its own group but for this analysis there is not enough information for those years
-  )) 
+  mutate(state_full = state.name[match(State,state.abb)])
 
 accidents
 
@@ -80,6 +78,155 @@ a_year %>%
        caption = "Data: Colorado Avalanche Information Center") +
   scale_color_manual(values = c("#E69F00", "#0072B2"), name = "Incident Type", labels = c("Death","Avalanche"))+
   theme_minimal()
+
+```
+### Which States have highest consentration of Avalanche Accidents?
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+accidents %>%
+  group_by(State) %>%
+  summarize(total_accidents = n()) %>%
+  filter(total_accidents > 1) %>%
+  ggplot() +
+  geom_col(aes(y = total_accidents, x = fct_reorder(State, desc(total_accidents)))) +
+  labs(title = "Which State has the Highest Number of Avalanches?",
+       x = "State",
+       y = "Total Accidents") +
+  theme_minimal()
+
+```
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+accidents_state = accidents %>%
+  group_by(State) %>%
+  summarize(total_accidents = n(), total_deaths = sum(Killed)) %>%
+  filter(total_accidents > 1) 
+
+accidents_state = gather(accidents_state, "type", "count", -State)
+
+```
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+accidents_state %>%
+  ggplot() +
+  geom_col(aes(x = fct_reorder(State, desc(count)), y = count, fill = type), position = "dodge") +
+  labs(title = "Which State Has the highest number of avalanche incidents?", 
+       x = "State", 
+       y = "Number of Incidents") +
+  scale_fill_manual(values = c("darkgreen", "darkred"), name = "Incident Type", labels = c("Avalanche", "Death")) +
+  theme_minimal()
+
+```
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+states_count = accidents %>%
+  group_by(state_full, State)%>%
+  summarize(count = n()) %>%
+  mutate(full = state_full)
+
+states_count = states_count %>%
+  mutate(bin = cut(count, breaks = c(0,1,10,20,80, 100, 120, 200, 300)))
+
+states2 = full_join(states, states_count, by = "full")
+
+states2 = states2 %>%
+  mutate(count = ifelse(is.na(count), 0, count))
+```
+
+```{r}
+single = paste0(states2$full,"<br>",states2$count," Accident", sep="")
+multiple = paste0(states2$full,"<br>",states2$count," Accidents", sep="")
+
+mappedCounts <- states2 %>%
+  ggplot(aes(x, y, 
+             group = group,
+             data_id = full)) +
+  geom_polygon_interactive(color = "grey45", 
+                           fill = "grey", 
+                           aes(tooltip = ifelse(count > 0, ifelse(count > 1, multiple, single), paste0(full,"<br>No Avalanche Accidents", sep="")))) + 
+  labs(title="Avalanche Incidents",subtitle = "From April 1951 to May 2022")+
+  theme_minimal()+
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+
+graphedCount = states_count %>%
+  filter(count >0)%>%
+  ggplot()+
+  geom_col_interactive(aes(x = fct_reorder(full,count),
+                           y = count, 
+                           tooltip = ifelse(count > 1, paste0(full,"<br>",count," Accidents", sep=""),paste0(full,"<br>",count," Accident", sep="")), 
+                           data_id = full))+
+  labs(x = "State", y = "Number of Accidents", caption = "Data: Colorado Avalanche Information Center")+
+  theme_minimal()+
+  coord_flip()
+
+p = mappedCounts/graphedCount
+
+girafe(ggobj = p, width_svg = 4.5, height_svg = 5.5,options = list(opts_sizing(rescale = TRUE, width = .75)))
+
+```
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+
+recentAccidents = accidents %>%
+  filter(YYYY > 1999)
+  
+recentAccidents = recentAccidents%>%
+  mutate(PrimaryActivity = ifelse(Killed > 1, paste0(PrimaryActivity,"s"), PrimaryActivity))
+```
+
+### Where did these Events Occur in Recent Years?
+```{r}
+g <- list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showland = TRUE,
+  landcolor = toRGB("gray95"),
+  subunitcolor = toRGB("gray85"),
+  countrycolor = toRGB("gray85"),
+  countrywidth = 0.5,
+  subunitwidth = 0.5
+)
+
+fig <- plot_geo(recentAccidents, lat = ~lat, lon = ~lon)
+fig <- fig %>% add_markers(
+    text = ~paste(Location, 
+                  paste("State:",state_full), 
+                  paste(Killed, PrimaryActivity, "Died"), 
+                  Date, sep = "<br />"),
+    color = ~factor(Killed), symbol = I("diamond"), size = I(8), hoverinfo = "text"
+  )
+fig <- fig %>% layout(legend=list(title=list(text='<b> # of Deaths </b>')))
+fig <- fig %>% layout(
+    title = 'Avalanche Deaths In United States<br/>(From January 2000 to May 2022)',
+    geo = g
+  )
+
+fig
 ```
 
 ### Does mode of transportation impact the number of accidents?
@@ -123,47 +270,6 @@ travel_type %>%
   scale_fill_manual(values = c("darkgreen", "darkred"), name = "Incident Type", labels = c("Avalanche", "Death"))
 ```
 
-### Which States have highest consentration of Avalanche Accidents?
-
-```{r}
-accidents %>%
-  group_by(State) %>%
-  summarize(total_accidents = n()) %>%
-  filter(total_accidents > 1) %>%
-  ggplot() +
-  geom_col(aes(y = total_accidents, x = fct_reorder(State, desc(total_accidents)))) +
-  labs(title = "Which State has the Highest Number of Avalanches?",
-       x = "State",
-       y = "Total Accidents") +
-  theme_minimal()
-
-```
-
-```{r}
-#| echo: false
-#| include: false
-#| message: false
-#| warning: false
-accidents_state = accidents %>%
-  group_by(State) %>%
-  summarize(total_accidents = n(), total_deaths = sum(Killed)) %>%
-  filter(total_accidents > 1) 
-
-accidents_state = gather(accidents_state, "type", "count", -State)
-
-```
-
-```{r}
-accidents_state %>%
-  ggplot() +
-  geom_col(aes(x = fct_reorder(State, desc(count)), y = count, fill = type), position = "dodge") +
-  labs(title = "Which State Has the highest number of avalanche incidents?", 
-       x = "State", 
-       y = "Number of Incidents") +
-  scale_fill_manual(values = c("darkgreen", "darkred"), name = "Incident Type", labels = c("Avalanche", "Death")) +
-  theme_minimal()
-
-```
 
 ```{r}
 #| echo: false
