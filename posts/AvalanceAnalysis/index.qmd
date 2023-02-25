@@ -80,7 +80,8 @@ a_year %>%
   theme_minimal()
 
 ```
-### Which States have highest consentration of Avalanche Accidents?
+
+### Which States have highest concentration of Avalanche Accidents?
 
 ```{r}
 #| echo: false
@@ -200,6 +201,7 @@ recentAccidents = recentAccidents%>%
 ```
 
 ### Where did these Events Occur in Recent Years?
+
 ```{r}
 g <- list(
   scope = 'usa',
@@ -269,7 +271,6 @@ travel_type %>%
        y = "Number of Incidents") +
   scale_fill_manual(values = c("darkgreen", "darkred"), name = "Incident Type", labels = c("Avalanche", "Death"))
 ```
-
 
 ```{r}
 #| echo: false
