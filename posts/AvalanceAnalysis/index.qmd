@@ -1,5 +1,6 @@
 ---
 title: "Avalanche Analysis"
+author: "Willa Van Liew"
 editor: visual
 bibliography: "bibliography.bib"
 nocite: |
@@ -31,6 +32,7 @@ library(ggiraph)
 library(patchwork)
 library(magick)
 library(plotly)
+library(htmltools)
 
 states <- usmap::us_map()
 accidents <- read_csv("./data/Accidents_2022_PUBLIC (1).csv")
@@ -185,6 +187,17 @@ p = mappedCounts/graphedCount
 
 girafe(ggobj = p, width_svg = 4.5, height_svg = 5.5,options = list(opts_sizing(rescale = TRUE, width = .75)))
 
+```
+
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+#| warning: false
+intergraphic = girafe(ggobj = p, width_svg = 4.5, height_svg = 5.5,options = list(opts_sizing(rescale = TRUE, width = .75)))
+
+htmltools::save_html(intergraphic, "../../img/av_map.html")
 ```
 
 ```{r}

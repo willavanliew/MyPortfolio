@@ -1,5 +1,6 @@
 ---
 title: "TidyTuesdayYarn"
+author: "Willa Van Liew"
 format: html
 editor: visual
 bibliography: "bibliography.bib"

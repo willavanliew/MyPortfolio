@@ -1,5 +1,6 @@
 ---
 title: "Banned Books"
+author: "Willa Van Liew"
 format: 
   html:
     page-layout: full
@@ -75,7 +76,6 @@ topbooks = topbooks %>%
 ```
 
 ```{r}
-#Add links to purchase the books -> to authors homepage? 
 topbooks %>%
   select(image = image_url, Title, Author, numTimesBanned) %>%
   ungroup() %>%
