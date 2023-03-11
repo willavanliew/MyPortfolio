@@ -33,6 +33,7 @@ library(patchwork)
 library(magick)
 library(plotly)
 library(htmltools)
+library(htmlwidgets)
 
 states <- usmap::us_map()
 accidents <- read_csv("./data/Accidents_2022_PUBLIC (1).csv")
@@ -195,9 +196,11 @@ girafe(ggobj = p, width_svg = 4.5, height_svg = 5.5,options = list(opts_sizing(r
 #| include: false
 #| message: false
 #| warning: false
-intergraphic = girafe(ggobj = p, width_svg = 4.5, height_svg = 5.5,options = list(opts_sizing(rescale = TRUE, width = .75)))
 
-htmltools::save_html(intergraphic, "../../img/av_map.html")
+q = mappedCounts + graphedCount
+intergraphic = girafe(ggobj = q, width_svg = 4.5, height_svg = 5.5,options = list(opts_sizing(rescale = TRUE, width = .75)))
+
+#htmltools::save_html(intergraphic, "~/Documents/DS-Masters/CWD/Presentations/img/av_map.html")
 ```
 
 ```{r}
@@ -242,6 +245,8 @@ fig <- fig %>% layout(
   )
 
 fig
+
+#htmlwidgets::saveWidget(fig, "~/Documents/DS-Masters/CWD/Presentations/img/fig.html", selfcontained=TRUE, libdir = "lib")
 ```
 
 ### Does mode of transportation impact the number of accidents?

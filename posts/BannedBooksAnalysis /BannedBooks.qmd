@@ -76,7 +76,8 @@ topbooks = topbooks %>%
 ```
 
 ```{r}
-topbooks %>%
+#Add links to purchase the books -> to authors homepage? 
+booksTable = topbooks %>%
   select(image = image_url, Title, Author, numTimesBanned) %>%
   ungroup() %>%
   gt()%>%
@@ -88,6 +89,12 @@ topbooks %>%
     Author = "Author",
     numTimesBanned = "Total Number of Bans"
   )
+booksTable
+```
+
+
+```{r}
+gtsave(booksTable, "../../img/bannedBooksTable.html")
 ```
 
 ```{r}
