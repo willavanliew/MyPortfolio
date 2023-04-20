@@ -6,7 +6,7 @@ editor: visual
 bibliography: "bibliography.bib"
 nocite: |
      @*
-categories: [Analysis, TidyTuesday, Yarn, R]
+categories: [TidyTuesday]
 image: "jean-marc-vieregge-cDKqFb-NOZc-unsplash.jpg"
 ---
 

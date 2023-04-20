@@ -6,7 +6,7 @@ bibliography: "bibliography.bib"
 nocite: |
      @*
 image: "matea-nikolina-ythcnAYLgfQ-unsplash.jpg"
-categories: [Analysis, Skiing, R]
+categories: [Interactive Plots, ggiraph]
 ---
 
 Analysis of Avalanche Accidents and Fatalities in the United States from 1950 to 2022.
@@ -189,7 +189,6 @@ p = mappedCounts/graphedCount
 girafe(ggobj = p, width_svg = 4.5, height_svg = 5.5,options = list(opts_sizing(rescale = TRUE, width = .75)))
 
 ```
-
 
 ```{r}
 #| echo: false

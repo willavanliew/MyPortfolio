@@ -1,0 +1,19 @@
+---
+title: "Federal Funding"
+editor: visual
+author: "Willa Van Liew"
+format: 
+  html:
+    page-layout: full
+image: "govenment-spending.png"
+categories: [Shiny]
+---
+
+Analysis of U.S. Federal Spending from 2001 to 2022
+
+
+### Data And Analysis 
+The data for this analysis comes from the annual  <a href="https://fiscaldata.treasury.gov/datasets/u-s-government-financial-report/statements-of-changes-in-social-insurance-amounts" target="_blank">Federal Spending report for the United States</a>
+
+<iframe src="https://fedspending-xdki2s23xq-wl.a.run.app/" width="1000" height="650" allowfullscreen="true">
+

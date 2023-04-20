@@ -5,8 +5,10 @@ format:
   html:
     page-layout: full
 image: "portfolio_snapshot.png"
+categories: Reveal.js
 editor: visual
 ---
 
+<iframe src="https://willavanliew.github.io/Presentations/Presentation.html#/title-slide" width="700" height="650" allowfullscreen="true">
 
-<iframe src="https://willavanliew.github.io/Presentations/Presentation.html#/title-slide" width="700" height="650" allowfullscreen = true></iframe>
+</iframe>

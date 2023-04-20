@@ -9,7 +9,7 @@ bibliography: "bibliography.bib"
 nocite: |
      @*
 image: "./data/bannedbooks.jpeg"
-categories: [Analysis, R, Tables]
+categories: [Tables]
 ---
 
 An Analysis of the PEN America's Index of School Book Bans from July 1, 2021 to June 30, 2022
@@ -91,7 +91,6 @@ booksTable = topbooks %>%
   )
 booksTable
 ```
-
 
 ```{r}
 gtsave(booksTable, "../../img/bannedBooksTable.html")
